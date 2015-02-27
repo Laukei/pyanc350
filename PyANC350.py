@@ -494,5 +494,3 @@ def debitmask(input_int,num_bits = False):
 			result_array[i] = 1
 			input_int -= 2**i
 	return result_array
-
-anc = Positioner()
