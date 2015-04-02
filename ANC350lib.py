@@ -11,6 +11,9 @@
 #                      rob@robheath.me.uk
 #                         24-Feb-2015
 #                       robheath.me.uk
+#
+#    v1.1: corrected POINTER used in intEnable (!!)
+#
 
 
 import ctypes
@@ -235,7 +238,7 @@ positionerGetRotCount.argtypes = [Int32, Int32, ctypes.POINTER(Int32)]
 positionerGetSpeed.argtypes = [Int32, Int32, ctypes.POINTER(Int32)]
 positionerGetStatus.argtypes = [Int32, Int32, ctypes.POINTER(Int32)]
 positionerGetStepwidth.argtypes = [Int32, Int32, ctypes.POINTER(Int32)]
-positionerIntEnable.argtypes = [Int32, Int32, ctypes.POINTER(ctypes.c_bool)]
+positionerIntEnable.argtypes = [Int32, Int32, ctypes.c_bool]
 positionerLoad.argtypes = [Int32, Int32, ctypes.POINTER(ctypes.c_char)]
 positionerMoveAbsolute.argtypes = [Int32, Int32, Int32, Int32]
 positionerMoveAbsoluteSync.argtypes = [Int32, Int32]
