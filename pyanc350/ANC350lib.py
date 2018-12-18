@@ -39,7 +39,7 @@ def checkError(code,func,args):
 	if code == NCB_Ok:
 		return
 	elif code == NCB_BootIgnored:	   
-		print "Warning: boot ignored in",func.__name__,"with parameters:",args
+		print("Warning: boot ignored in",func.__name__,"with parameters:",args)
 		return
 	elif code == NCB_Error:			 
 		raise Exception("Error: unspecific in"+str(func.__name__)+"with parameters:"+str(args))

@@ -33,7 +33,7 @@
 #                         24-Feb-2015
 #                       robheath.me.uk
 
-import ANC350lib
+import pyanc350.ANC350lib as ANC350lib
 import ctypes
 import math
 
@@ -81,8 +81,8 @@ class Positioner:
 		self.posinf = ANC350lib.PositionerInfo() #create PositionerInfo Struct
 		self.numconnected = ANC350lib.positionerCheck(ctypes.byref(self.posinf)) #look for positioners!
 		if self.numconnected > 0:
-			print self.numconnected,'ANC350 connected'
-			print 'ANC350 with id:',self.posinf.id,'has locked state:',self.posinf.locked
+			print(self.numconnected,'ANC350 connected')
+			print('ANC350 with id:',self.posinf.id,'has locked state:',self.posinf.locked)
 
 	def clearStopDetection(self, axis):
 		'''
@@ -103,9 +103,9 @@ class Positioner:
 		self.handle = ANC350lib.Int32(0)
 		try:
 			ANC350lib.positionerConnect(0,ctypes.byref(self.handle)) #0 means "first device"
-			print 'connected to first positioner'
+			print('connected to first positioner')
 		except Exception as e:
-			print 'unable to connect!'
+			print('unable to connect!')
 			raise e		
 
 	def dcInEnable(self, axis, state):
