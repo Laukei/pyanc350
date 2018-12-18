@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
 	name = "pyanc350",
-	version = "0.9",
+	version = "0.9.1",
 	author = "Robert Heath",
 	author_email = "rob@robheath.me.uk",
 	description = "Windows wrapper for attocube systems AG's ANC350 control DLL",
