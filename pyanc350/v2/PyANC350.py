@@ -33,7 +33,7 @@
 #                         24-Feb-2015
 #                       robheath.me.uk
 
-import pyanc350.ANC350lib as ANC350lib
+import pyanc350.v2.ANC350lib as ANC350lib
 import ctypes
 import math
 

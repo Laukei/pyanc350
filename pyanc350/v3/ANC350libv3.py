@@ -62,11 +62,14 @@ def checkError(code,func,args):
     return code
 
 # import dll - have to change directories so it finds libusb0.dll
+'''
 directory_of_this_module_and_dlls = os.path.dirname(os.path.realpath(__file__))
 current_directory = os.getcwd()
 os.chdir(directory_of_this_module_and_dlls)
-anc350v4 = ctypes.windll.LoadLibrary(directory_of_this_module_and_dlls+'\\anc350v3.dll')
+anc350v4 = ctypes.windll.LoadLibrary(directory_of_this_module_and_dlls+'\\anc350v4.dll')
 os.chdir(current_directory)
+'''
+anc350v4 = ctypes.windll.anc350v3
 
 #aliases for the strangely-named functions from the dll
 discover = getattr(anc350v4,"ANC_discover")

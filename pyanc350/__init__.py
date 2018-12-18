@@ -1,4 +1,21 @@
-import pyanc350.ANC350lib as ANC350lib
-#import pyanc350.ANC350libv4 as ANC350libv4
-import pyanc350.PyANC350 as PyANC350
-#import pyanc350.PyANC350v4 as PyANC350v4
+import logging
+
+logger = logging.getLogger(__name__)
+
+try:
+	import pyanc350.v2
+	logger.info('found anc350v2.dll')
+except OSError:
+	logger.warning('could not find anc350v2.dll')
+
+try:
+	import pyanc350.v3
+	logger.info('found anc350v3.dll')
+except OSError:
+	logger.warning('could not find anc350v3.dll')
+
+try:
+	import pyanc350.v4
+	logger.info('found anc350v4.dll')
+except OSError:
+	logger.warning('could not find anc350v4.dll')

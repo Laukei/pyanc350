@@ -32,7 +32,7 @@
 #                         5-Jul-2016
 #              http://nowack.lassp.cornell.edu/
 
-import ANC350v4lib as ANC
+import pyanc350.v4.ANC350libv4 as ANC
 import ctypes, math
 
 class Positioner:
@@ -64,7 +64,7 @@ class Positioner:
             enable	Enable (1) or disable (0) A-Quad-B output
             resolution	A-Quad-B step width in m; internal resolution is 1 nm
             clock	Clock of the A-Quad-B output [s]. Allowed range is 40ns ... 1.3ms; internal resulution is 20ns.
-        Returns
+        Returns/
             None
         '''
         ANC.configureAQuadBOut(self.device, axisNo, enable, ctypes.c_double(resolution), ctypes.c_double(clock))
