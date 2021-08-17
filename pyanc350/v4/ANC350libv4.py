@@ -18,36 +18,38 @@
 #              http://nowack.lassp.cornell.edu/
 
 
-import ctypes, os, time
+import ctypes
+from pathlib import Path
 
 #
 # List of error types
 #
-ANC_Ok = 0 #                    No error
-ANC_Error = -1 #                Unknown / other error
-ANC_Timeout = 1 #               Timeout during data retrieval
-ANC_NotConnected = 2 #          No contact with the positioner via USB
-ANC_DriverError = 3 #           Error in the driver response
-ANC_DeviceLocked = 7 #          A connection attempt failed because the device is already in use
-ANC_Unknown = 8 # Unknown error.
-ANC_NoDevice = 9 # Invalid device number used in call
-ANC_NoAxis = 10 # Invalid axis number in function call
-ANC_OutOfRange = 11 # Parameter in call is out of range
-ANC_NotAvailable = 12 # Function not available for device type
+ANC_Ok = 0  # No error
+ANC_Error = -1  # Unknown / other error
+ANC_Timeout = 1  # Timeout during data retrieval
+ANC_NotConnected = 2  # No contact with the positioner via USB
+ANC_DriverError = 3  # Error in the driver response
+ANC_DeviceLocked = 7  # A connection attempt failed because the device is already in use
+ANC_Unknown = 8  # Unknown error.
+ANC_NoDevice = 9  # Invalid device number used in call
+ANC_NoAxis = 10  # Invalid axis number in function call
+ANC_OutOfRange = 11  # Parameter in call is out of range
+ANC_NotAvailable = 12  # Function not available for device type
 
-#checks the errors returned from the dll
-def checkError(code,func,args):
+
+# checks the errors returned from the dll
+def checkError(code, func, args):
     if code == ANC_Ok:
         return
-    elif code == ANC_Error:             
-        raise Exception("Error: unspecific in"+str(func.__name__)+"with parameters:"+str(args))
-    elif code == ANC_Timeout:           
-        raise Exception("Error: comm. timeout in"+str(func.__name__)+"with parameters:"+str(args))
-    elif code == ANC_NotConnected:      
-        raise Exception("Error: not connected") 
-    elif code == ANC_DriverError:       
-        raise Exception("Error: driver error") 
-    elif code == ANC_DeviceLocked:      
+    elif code == ANC_Error:
+        raise Exception("Error: unspecific in" + str(func.__name__) + "with parameters:" + str(args))
+    elif code == ANC_Timeout:
+        raise Exception("Error: comm. timeout in" + str(func.__name__) + "with parameters:" + str(args))
+    elif code == ANC_NotConnected:
+        raise Exception("Error: not connected")
+    elif code == ANC_DriverError:
+        raise Exception("Error: driver error")
+    elif code == ANC_DeviceLocked:
         raise Exception("Error: device locked")
     elif code == ANC_NoDevice:
         raise Exception("Error: invalid device number")
@@ -57,55 +59,50 @@ def checkError(code,func,args):
         raise Exception("Error: parameter out of range")
     elif code == ANC_NotAvailable:
         raise Exception("Error: function not available")
-    else:                    
-        raise Exception("Error: unknown in"+str(func.__name__)+"with parameters:"+str(args))
+    else:
+        raise Exception("Error: unknown in" + str(func.__name__) + "with parameters:" + str(args))
     return code
 
+
 # import dll - have to change directories so it finds libusb0.dll
-'''
-directory_of_this_module_and_dlls = os.path.dirname(os.path.realpath(__file__))
-current_directory = os.getcwd()
-os.chdir(directory_of_this_module_and_dlls)
-anc350v4 = ctypes.windll.LoadLibrary(directory_of_this_module_and_dlls+'\\anc350v4.dll')
-os.chdir(current_directory)
-'''
-anc350v4 = ctypes.windll.anc350v4
+d = Path(__file__).parent
+anc350v4 = ctypes.WinDLL(f'{d}\\anc350v4.dll')
 
-#aliases for the strangely-named functions from the dll
-discover = getattr(anc350v4,"ANC_discover")
-getDeviceInfo = getattr(anc350v4,"ANC_getDeviceInfo")
-connect = getattr(anc350v4,"ANC_connect")
-disconnect = getattr(anc350v4,"ANC_disconnect")
-getDeviceConfig = getattr(anc350v4,"ANC_getDeviceConfig")
-getAxisStatus = getattr(anc350v4,"ANC_getAxisStatus")
-setAxisOutput = getattr(anc350v4,"ANC_setAxisOutput")
-setAmplitude = getattr(anc350v4,"ANC_setAmplitude")
-setFrequency = getattr(anc350v4,"ANC_setFrequency")
-setDcVoltage = getattr(anc350v4,"ANC_setDcVoltage")
-getAmplitude = getattr(anc350v4,"ANC_getAmplitude")
-getFrequency = getattr(anc350v4,"ANC_getFrequency")
-startSingleStep = getattr(anc350v4,"ANC_startSingleStep")
-startContinousMove = getattr(anc350v4,"ANC_startContinousMove")
-startAutoMove = getattr(anc350v4,"ANC_startAutoMove")
-setTargetPosition = getattr(anc350v4,"ANC_setTargetPosition")
-setTargetRange = getattr(anc350v4,"ANC_setTargetRange")
-getPosition = getattr(anc350v4,"ANC_getPosition")
-getFirmwareVersion = getattr(anc350v4,"ANC_getFirmwareVersion")
-configureExtTrigger = getattr(anc350v4,"ANC_configureExtTrigger")
-configureAQuadBIn = getattr(anc350v4,"ANC_configureAQuadBIn")
-configureAQuadBOut = getattr(anc350v4,"ANC_configureAQuadBOut")
-configureRngTriggerPol = getattr(anc350v4,"ANC_configureRngTriggerPol")
-configureRngTrigger = getattr(anc350v4,"ANC_configureRngTrigger")
-configureRngTriggerEps = getattr(anc350v4,"ANC_configureRngTriggerEps")
-configureNslTrigger = getattr(anc350v4,"ANC_configureNslTrigger")
-configureNslTriggerAxis = getattr(anc350v4,"ANC_configureNslTriggerAxis")
-selectActuator = getattr(anc350v4,"ANC_selectActuator")
-getActuatorName = getattr(anc350v4,"ANC_getActuatorName")
-getActuatorType = getattr(anc350v4,"ANC_getActuatorType")
-measureCapacitance = getattr(anc350v4,"ANC_measureCapacitance")
-saveParams = getattr(anc350v4,"ANC_saveParams")
+# aliases for the strangely-named functions from the dll
+discover = getattr(anc350v4, "ANC_discover")
+getDeviceInfo = getattr(anc350v4, "ANC_getDeviceInfo")
+connect = getattr(anc350v4, "ANC_connect")
+disconnect = getattr(anc350v4, "ANC_disconnect")
+getDeviceConfig = getattr(anc350v4, "ANC_getDeviceConfig")
+getAxisStatus = getattr(anc350v4, "ANC_getAxisStatus")
+setAxisOutput = getattr(anc350v4, "ANC_setAxisOutput")
+setAmplitude = getattr(anc350v4, "ANC_setAmplitude")
+setFrequency = getattr(anc350v4, "ANC_setFrequency")
+setDcVoltage = getattr(anc350v4, "ANC_setDcVoltage")
+getAmplitude = getattr(anc350v4, "ANC_getAmplitude")
+getFrequency = getattr(anc350v4, "ANC_getFrequency")
+startSingleStep = getattr(anc350v4, "ANC_startSingleStep")
+startContinousMove = getattr(anc350v4, "ANC_startContinousMove")
+startAutoMove = getattr(anc350v4, "ANC_startAutoMove")
+setTargetPosition = getattr(anc350v4, "ANC_setTargetPosition")
+setTargetRange = getattr(anc350v4, "ANC_setTargetRange")
+getPosition = getattr(anc350v4, "ANC_getPosition")
+getFirmwareVersion = getattr(anc350v4, "ANC_getFirmwareVersion")
+configureExtTrigger = getattr(anc350v4, "ANC_configureExtTrigger")
+configureAQuadBIn = getattr(anc350v4, "ANC_configureAQuadBIn")
+configureAQuadBOut = getattr(anc350v4, "ANC_configureAQuadBOut")
+configureRngTriggerPol = getattr(anc350v4, "ANC_configureRngTriggerPol")
+configureRngTrigger = getattr(anc350v4, "ANC_configureRngTrigger")
+configureRngTriggerEps = getattr(anc350v4, "ANC_configureRngTriggerEps")
+configureNslTrigger = getattr(anc350v4, "ANC_configureNslTrigger")
+configureNslTriggerAxis = getattr(anc350v4, "ANC_configureNslTriggerAxis")
+selectActuator = getattr(anc350v4, "ANC_selectActuator")
+getActuatorName = getattr(anc350v4, "ANC_getActuatorName")
+getActuatorType = getattr(anc350v4, "ANC_getActuatorType")
+measureCapacitance = getattr(anc350v4, "ANC_measureCapacitance")
+saveParams = getattr(anc350v4, "ANC_saveParams")
 
-#set error checking & handling
+# set error checking & handling
 discover.errcheck = checkError
 connect.errcheck = checkError
 disconnect.errcheck = checkError
